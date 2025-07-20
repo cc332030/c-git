@@ -17,20 +17,24 @@ export class GitUtils {
 
     static dealConfig(config) {
 
-        const { host} = config.host;
-        let { type } = config.host;
+        // console.debug('dealConfig config', config)
 
-        const scheme = host.split(':')[0];
-        const domain = host.split('//')[1];
+        const { host } = config;
+        let { type } = config;
+
+        const hostArr = host.split('://');
+
+        const scheme = hostArr[0]
+        const domain = hostArr[1]
 
         if(!type) {
 
-            if(type.indexOf(GITHUB) > -1) {
+            if(domain.indexOf(GITHUB) > -1) {
                 type = GITHUB;
-            } else if(type.indexOf(GITLAB) > -1) {
+            } else if(domain.indexOf(GITLAB) > -1) {
                 type = GITLAB;
             } else {
-                throw new Error(`Unsupported server type ${type}`);
+                throw new Error(`Unsupported server type ` + type);
             }
 
         }
@@ -45,12 +49,9 @@ export class GitUtils {
 
     static newClient(config) {
 
-        const host = config.host;
-
-        const scheme = host.split(':')[0];
-        const domain = host.split('//')[1];
-
         const configNew = this.dealConfig(config);
+        // console.debug('configNew', configNew)
+
         const { type } = configNew;
 
         switch (type) {

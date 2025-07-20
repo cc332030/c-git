@@ -13,10 +13,7 @@ import {GitClient} from './GitClient.js'
 export class GitHubClient extends GitClient {
 
     constructor(config) {
-        super({
-            host: 'https://github.com',
-            ...config,
-        })
+        super(config)
     }
 
     createClient(config) {
@@ -34,7 +31,6 @@ export class GitHubClient extends GitClient {
             repos.forEach(repo  => {
 
                 repoConsumer(repo.full_name);
-
             });
         }
 

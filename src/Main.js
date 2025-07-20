@@ -1,19 +1,35 @@
 import fs from 'fs'
 import yaml from 'js-yaml'
+
 import {GitUtils} from './git/util/GitUtils.js'
 
-function loadRepos(servers) {
+async function main() {
+
+    const config = yaml.load(fs.readFileSync('config.yml',  'utf8'));
+    const { servers } = config
+
+    // console.debug('servers', JSON.stringify(servers, null, 2));
+
+    const repos = await loadRepos(servers);
+
+    fs.writeFileSync('d:/repos.txt', JSON.stringify(repos, null, 2), 'utf8');
+
+}
+
+async function loadRepos(servers) {
 
     const repos = {}
 
     for (const server of servers) {
 
+        console.debug(`\nload host: ${server.host}`);
+
         const client = GitUtils.newClient(server)
-        client.repoConsumer(repo => {
+        await client.repoConsumer(repo => {
 
             let repoConfig = repos[repo]
             if (!repoConfig) {
-                repoConfig = {
+                repos[repo] = repoConfig = {
                     clients: [],
                 }
             }
@@ -26,17 +42,6 @@ function loadRepos(servers) {
     }
 
     return repos
-}
-
-function main() {
-
-    const config = yaml.load(fs.readFileSync('config.yml',  'utf8'));
-    const { servers } = config
-
-    const repos = loadRepos(servers);
-
-    console.debug('repos', JSON.stringify(repos, null, 2));
-
 }
 
 main()
