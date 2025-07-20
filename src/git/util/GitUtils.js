@@ -73,9 +73,9 @@ export class GitUtils {
 
         const repoPath = `${path}/${repo}`
         const serverConfig = client.getConfig()
-        const { type, username, host } = serverConfig
+        const { username, host } = serverConfig
 
-        console.debug(`\ncloneOrPull, type: ${type}, type: ${username}, type: ${host}, repoPath: ${repoPath}`)
+        console.debug(`\ncloneOrPull, username: ${username}, host: ${host}, repoPath: ${repoPath}`)
 
         let exists = true;
         try {
