@@ -4,4 +4,4 @@ servers:
     token: ${GITHUB_TOKEN}
 
   - host: https://gitlab.com
-    token: gitlab-token
+    token: ${GITLAB_TOKEN}
