@@ -9,3 +9,5 @@
 export const GITHUB = 'github'
 
 export const GITLAB = 'gitlab'
+
+export const GITEA = 'gitea'

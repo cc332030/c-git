@@ -11,7 +11,7 @@ import simpleGit from 'simple-git'
 
 import {GitHubClient} from '../client/GitHubClient.js'
 import {GitLabClient} from '../client/GitLabClient.js'
-import {GITHUB, GITLAB} from '../enums/GitType.js'
+import {GITEA, GITHUB, GITLAB} from '../enums/GitType.js'
 
 export class GitUtils {
 
@@ -37,6 +37,8 @@ export class GitUtils {
                 type = GITHUB
             } else if (domain.indexOf(GITLAB) > -1) {
                 type = GITLAB
+            } else if (domain.indexOf(GITEA) > -1) {
+                type = GITEA
             } else {
                 throw new Error(`Unsupported server type ` + type)
             }
@@ -63,6 +65,8 @@ export class GitUtils {
                 return new GitHubClient(configNew)
             case GITLAB:
                 return new GitLabClient(configNew)
+            case GITEA:
+                return new GiteaClient(configNew)
             default:
                 throw new Error(`Unsupported server type ${type}`)
         }
