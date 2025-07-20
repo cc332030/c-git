@@ -1,0 +1,7 @@
+
+servers:
+  - host: https://github.com
+    token: github-token
+
+  - host: https://gitlab.com
+    token: gitlab-token
