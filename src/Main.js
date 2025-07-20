@@ -36,7 +36,8 @@ async function loadRepos(servers) {
 
     for (const server of servers) {
 
-        console.debug(`\nload host: ${server.host}`);
+        const { type, username, host } = server
+        console.debug(`\nload type: ${type}, username: ${username}, host: ${host}`);
 
         const client = GitUtils.newClient(server)
         await client.repoConsumer(repo => {
