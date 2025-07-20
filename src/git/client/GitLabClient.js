@@ -6,7 +6,8 @@
  * @since 2025/7/20
  */
 
-import {Gitlab} from '@gitbeaker/node'
+import {Gitlab} from '@gitbeaker/rest'
+
 import {GitClient} from './GitClient.js'
 
 export class GitLabClient extends GitClient {

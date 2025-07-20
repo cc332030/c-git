@@ -20,7 +20,11 @@ async function main() {
         const tokenUrl = client.getTokenUrl(repo)
         // console.debug('tokenUrl', tokenUrl)
 
-        await GitUtils.cloneOrPull(tokenUrl, repo, path)
+        try {
+            await GitUtils.cloneOrPull(tokenUrl, repo, path)
+        } catch (e) {
+            console.error(e)
+        }
 
     }
 

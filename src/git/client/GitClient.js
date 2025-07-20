@@ -32,7 +32,11 @@ export class GitClient {
     getTokenUrl(repo) {
 
         const { token, scheme, domain } = this.config
-        return `${scheme}://${token}@${domain}/${repo}`
+
+        const repoArr = repo.split('/')
+        const [ username ] = repoArr
+
+        return `${scheme}://${username}:${token}@${domain}/${repo}`
     }
 
 }
