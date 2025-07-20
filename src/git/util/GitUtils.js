@@ -100,7 +100,7 @@ export class GitUtils {
             return;
         }
 
-        console.debug(`pull start`)
+        console.debug(`update start`)
         const gitInRepo = this.createGit(repoPath)
         const isRepo = await gitInRepo.checkIsRepo()
 
@@ -109,10 +109,16 @@ export class GitUtils {
                 await gitInRepo.pull()
                 console.log(`pull success`)
             } catch (e) {
-                console.error(`pull failure, repoUrl: ${repoUrl}`, e)
+                console.error(`pull failure, try fetch, repoUrl: ${repoUrl}`, e)
+                try {
+                    await gitInRepo.fetch()
+                    console.log(`fetch success`)
+                } catch (e) {
+                    console.error(`fetch failure, repoUrl: ${repoUrl}`, e)
+                }
             }
         } else {
-            console.error(`pull cancel of not git`)
+            console.error(`update cancel of not git`)
         }
 
     }
