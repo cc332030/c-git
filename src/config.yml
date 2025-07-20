@@ -1,4 +1,6 @@
 
+path: d:/file
+
 servers:
   - host: https://github.com
     token: ${GITHUB_TOKEN}
