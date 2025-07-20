@@ -73,13 +73,13 @@ export class GitUtils {
 
     }
 
-    static async cloneOrPull(repoUrl, client, repo, path) {
+    static async cloneOrUpdate(repoUrl, client, repo, path) {
 
         const repoPath = `${path}/${repo}`
         const serverConfig = client.getConfig()
         const { username, host } = serverConfig
 
-        console.debug(`\ncloneOrPull, username: ${username}, host: ${host}, repoPath: ${repoPath}`)
+        console.debug(`\ncloneOrUpdate, username: ${username}, host: ${host}, repoPath: ${repoPath}`)
 
         let exists = true;
         try {
