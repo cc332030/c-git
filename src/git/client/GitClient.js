@@ -13,18 +13,12 @@ export class GitClient {
     client
 
     constructor(config) {
-
-        const host = config.host;
-
-        const scheme = host.split(':')[0];
-        const domain = host.split('//')[1];
-
-        this.config = {
-            scheme,
-            domain,
-            ...this.config,
-        }
+        this.config = config
         this.client = this.createClient(config)
+    }
+
+    getConfig() {
+        return this.config
     }
 
     createClient(config) {
