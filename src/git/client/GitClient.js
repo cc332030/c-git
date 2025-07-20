@@ -17,6 +17,10 @@ export class GitClient {
         this.client = this.createClient(config)
     }
 
+    getType() {
+        return this.getConfig().type
+    }
+
     getConfig() {
         return this.config
     }

@@ -69,44 +69,43 @@ export class GitUtils {
 
     }
 
-    static async cloneOrPull(repoUrl, repo, path) {
+    static async cloneOrPull(repoUrl, client, repo, path) {
 
         const repoPath = `${path}/${repo}`
-        console.debug(`\ncloneOrPull repoPath: ${repoPath}`)
+        console.debug(`\ncloneOrPull, type: ${client.getConfig().type}, repoPath: ${repoPath}`)
 
+        let exists = true;
         try {
-
             fs.accessSync(repoPath)
-            console.debug(`pull start`)
-
-            // 目录存在，检查是否是Git仓库
-            const gitInRepo = this.createGit(repoPath)
-            const isRepo = await gitInRepo.checkIsRepo()
-
-            if (isRepo) {
-                await gitInRepo.pull((err) => {
-                    if (err) {
-                        console.error(`pull failure`, err)
-                    } else {
-                        console.log(`pull success`)
-                    }
-                })
-            } else {
-                console.error(' 目标目录存在，但不是Git仓库。')
-            }
-
         } catch (e) {
+            exists = false
+        }
+
+        if(!exists) {
 
             console.debug(`clone start`)
+            try {
+                await this.createGit().clone(repoUrl, repoPath, ['--depth=1'])
+                console.debug(`clone success`)
+            } catch (e) {
+                console.error(`clone failure, repoUrl: ${repoUrl}`, e)
+            }
+            return;
+        }
 
-            // 目录不存在，执行克隆
-            await this.createGit().clone(repoUrl, repoPath, ['--depth=1'], (cloneErr) => {
-                if (cloneErr) {
-                    console.error(`clone failure`, cloneErr)
-                } else {
-                    console.debug(`clone success`)
-                }
-            })
+        console.debug(`pull start`)
+        const gitInRepo = this.createGit(repoPath)
+        const isRepo = await gitInRepo.checkIsRepo()
+
+        if (isRepo) {
+            try {
+                await gitInRepo.pull()
+                console.log(`pull success`)
+            } catch (e) {
+                console.error(`pull failure, repoUrl: ${repoUrl}`, e)
+            }
+        } else {
+            console.error(`pull cancel of not git`)
         }
 
     }

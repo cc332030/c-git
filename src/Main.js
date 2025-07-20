@@ -21,9 +21,9 @@ async function main() {
         // console.debug('tokenUrl', tokenUrl)
 
         try {
-            await GitUtils.cloneOrPull(tokenUrl, repo, path)
+            await GitUtils.cloneOrPull(tokenUrl, client, repo, path)
         } catch (e) {
-            console.error(e)
+            console.error('cloneOrPull failure', e)
         }
 
     }
