@@ -31,8 +31,8 @@ export class GitClient {
 
     getTokenUrl(repo) {
 
-        const {token, scheme, domain} = this.config
-        return `${scheme}://${token}:${domain}/${repo}`
+        const { token, scheme, domain } = this.config
+        return `${scheme}://${token}@${domain}/${repo}`
     }
 
 }
