@@ -5,6 +5,10 @@ import {GitUtils} from './git/util/GitUtils.js'
 
 async function cloneAll() {
 
+    /**
+     *
+     * @type Config
+     */
     const config = yaml.load(fs.readFileSync('config.yml',  'utf8'));
     const { path, servers } = config
 
