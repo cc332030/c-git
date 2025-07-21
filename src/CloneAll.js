@@ -3,7 +3,7 @@ import yaml from 'js-yaml'
 
 import {GitUtils} from './git/util/GitUtils.js'
 
-async function main() {
+async function cloneAll() {
 
     const config = yaml.load(fs.readFileSync('config.yml',  'utf8'));
     const { path, servers } = config
@@ -59,4 +59,4 @@ async function loadRepos(servers) {
     return repos
 }
 
-main()
+cloneAll()
