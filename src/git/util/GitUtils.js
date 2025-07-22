@@ -105,17 +105,23 @@ export class GitUtils {
         const isRepo = await gitInRepo.checkIsRepo()
 
         if (isRepo) {
+
+            try {
+                await gitInRepo.fetch(['--unshallow'])
+            } catch (e) {}
+
+            try {
+                await gitInRepo.fetch(['--all'])
+                console.log(`fetch success`)
+            } catch (e) {
+                console.error(`fetch failure, repoUrl: ${repoUrl}`, e)
+            }
+
             try {
                 await gitInRepo.pull()
                 console.log(`pull success`)
             } catch (e) {
                 console.error(`pull failure, try fetch, repoUrl: ${repoUrl}`, e)
-                try {
-                    await gitInRepo.fetch()
-                    console.log(`fetch success`)
-                } catch (e) {
-                    console.error(`fetch failure, repoUrl: ${repoUrl}`, e)
-                }
             }
         } else {
             console.error(`update cancel of not git`)
