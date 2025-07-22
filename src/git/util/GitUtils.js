@@ -111,6 +111,13 @@ export class GitUtils {
             } catch (e) {}
 
             try {
+                await gitInRepo.raw([
+                    'config',
+                    '--replace-all',
+                    'remote.origin.fetch',
+                    '+refs/heads/*:refs/remotes/origin/*'
+                ]);
+
                 await gitInRepo.fetch(['--all'])
                 console.log(`fetch success`)
             } catch (e) {
