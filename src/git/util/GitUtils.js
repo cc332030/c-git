@@ -92,7 +92,7 @@ export class GitUtils {
 
             console.debug(`clone start`)
             try {
-                await this.createGit().clone(repoUrl, repoPath, ['--depth=1'])
+                await this.createGit().clone(repoUrl, repoPath, [])
                 console.debug(`clone success`)
             } catch (e) {
                 console.error(`clone failure, repoUrl: ${repoUrl}`, e)
