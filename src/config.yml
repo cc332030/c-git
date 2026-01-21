@@ -1,13 +1,16 @@
 
+
 path: d:/file
 
 servers:
   - host: https://github.com
+    sshHost: git@github.com
     username: c332030
     token: ${GITHUB_TOKEN}
     type: github
 
   - host: https://gitlab.com
+    sshHost: git@gitlab.com
     username: c332030
     token: ${GITLAB_TOKEN}
     type: gitlab
