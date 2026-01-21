@@ -113,9 +113,7 @@ export class GitUtils {
 
             try {
                 await gitInRepo.fetch(['--unshallow'])
-            } catch (e) {
-                console.error('fetch unshallow failure', e)
-            }
+            } catch (e) {}
 
             try {
                 await gitInRepo.raw([
