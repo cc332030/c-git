@@ -73,7 +73,7 @@ export class GitUtils {
 
     }
 
-    static async cloneOrUpdate(repoUrl, client, repo, repoConfig, path) {
+    static async cloneOrUpdate(repoUrl, client, repo, path) {
 
         const repoPath = `${path}/${repo}`
         const serverConfig = client.getConfig()
@@ -93,7 +93,7 @@ export class GitUtils {
             console.debug(`clone start`)
             try {
 
-                const sshHost = repoConfig.sshHost
+                const sshHost = serverConfig.sshHost
                 const cloneUrl = sshHost
                     ? `ssh://${sshHost}/${repo}`
                     : repoUrl
