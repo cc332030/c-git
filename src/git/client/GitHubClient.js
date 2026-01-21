@@ -23,7 +23,8 @@ export class GitHubClient extends GitClient {
     async repoConsumer(repoConsumer) {
 
         const iterator = this.client.paginate.iterator(this.client.repos.listForAuthenticatedUser,  {
-            per_page: 100,
+            affiliation: 'all',
+            per_page: 1000,
             visibility: 'all'
         });
 

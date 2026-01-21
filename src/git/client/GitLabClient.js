@@ -26,9 +26,11 @@ export class GitLabClient extends GitClient {
     async repoConsumer(repoConsumer) {
 
         const projects = await this.client.Projects.all({
+            affiliation: 'all',
             membership: true,       // 仅列出当前用户有权限的项目
+            recursive: true, // 递归
             min_access_level: 10,   // 最小权限：Guest (10) 及以上
-            perPage: 100,           // 每页数量
+            perPage: 1000,           // 每页数量
             maxPages: 10            // 最大页数（按需调整）
         });
 

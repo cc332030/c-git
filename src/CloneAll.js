@@ -25,7 +25,7 @@ async function cloneAll() {
         // console.debug('tokenUrl', tokenUrl)
 
         try {
-            await GitUtils.cloneOrUpdate(tokenUrl, client, repo, path)
+            await GitUtils.cloneOrUpdate(tokenUrl, client, repo, repoConfig, path)
         } catch (e) {
             console.error('cloneOrUpdate failure', e)
         }
