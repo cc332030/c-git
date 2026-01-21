@@ -88,15 +88,16 @@ export class GitUtils {
             exists = false
         }
 
+        const sshHost = serverConfig.sshHost
+        const cloneUrl = sshHost
+            ? `ssh://${sshHost}/${repo}`
+            : repoUrl
         if(!exists) {
 
             console.debug(`clone start`)
             try {
 
-                const sshHost = serverConfig.sshHost
-                const cloneUrl = sshHost
-                    ? `ssh://${sshHost}/${repo}`
-                    : repoUrl
+
                 await this.createGit().clone(cloneUrl, repoPath, [])
                 console.debug(`clone success`)
             } catch (e) {
@@ -126,14 +127,14 @@ export class GitUtils {
                 await gitInRepo.fetch(['--all'])
                 console.log(`fetch success`)
             } catch (e) {
-                console.error(`fetch failure, repoUrl: ${repoUrl}`, e)
+                console.error(`fetch failure, cloneUrl: ${cloneUrl}`, e)
             }
 
             try {
                 await gitInRepo.pull()
                 console.log(`pull success`)
             } catch (e) {
-                console.error(`pull failure, try fetch, repoUrl: ${repoUrl}`, e)
+                console.error(`pull failure, try fetch, cloneUrl: ${cloneUrl}`, e)
             }
         } else {
             console.error(`update cancel of not git`)
