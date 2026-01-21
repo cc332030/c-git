@@ -92,7 +92,12 @@ export class GitUtils {
 
             console.debug(`clone start`)
             try {
-                await this.createGit().clone(`ssh://${repoConfig.ssh-host}/${repo}`, repoPath, [])
+
+                const sshHost = repoConfig.sshHost
+                const cloneUrl = sshHost
+                    ? `ssh://${sshHost}/${repo}`
+                    : repoUrl
+                await this.createGit().clone(cloneUrl, repoPath, [])
                 console.debug(`clone success`)
             } catch (e) {
                 console.error(`clone failure, repoUrl: ${repoUrl}`, e)
@@ -108,7 +113,9 @@ export class GitUtils {
 
             try {
                 await gitInRepo.fetch(['--unshallow'])
-            } catch (e) {}
+            } catch (e) {
+                console.error('fetch unshallow failure', e)
+            }
 
             try {
                 await gitInRepo.raw([
