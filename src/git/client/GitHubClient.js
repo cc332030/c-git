@@ -23,14 +23,13 @@ export class GitHubClient extends GitClient {
     async repoConsumer(repoConsumer) {
 
         const iterator = this.client.paginate.iterator(this.client.repos.listForAuthenticatedUser,  {
-            affiliation: 'all',
+            // affiliation: 'all', // 导致查不到数据
             per_page: 1000,
             visibility: 'all'
         });
 
         for await (const { data: repos } of iterator) {
             repos.forEach(repo  => {
-
                 repoConsumer(repo.full_name);
             });
         }
