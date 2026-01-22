@@ -73,71 +73,74 @@ export class GitUtils {
 
     }
 
-    static async cloneOrUpdate(repoUrl, client, repo, path) {
+    static async cloneOrUpdate(clients, repo, path) {
 
         const repoPath = `${path}/${repo}`
-        const serverConfig = client.getConfig()
-        const { username, host } = serverConfig
 
-        console.debug(`\ncloneOrUpdate, username: ${username}, host: ${host}, repoPath: ${repoPath}`)
+        for (const client of clients) {
 
-        let exists = true;
-        try {
-            fs.accessSync(repoPath)
-        } catch (e) {
-            exists = false
-        }
+            const serverConfig = client.getConfig()
+            const { username, host } = serverConfig
 
-        const sshHost = serverConfig.sshHost
-        const cloneUrl = sshHost
-            ? `ssh://${sshHost}/${repo}`
-            : repoUrl
-        if(!exists) {
+            console.debug(`\ncloneOrUpdate, username: ${username}, host: ${host}, repoPath: ${repoPath}`)
 
-            console.debug(`clone start`)
+            let exists = true;
             try {
-
-
-                await this.createGit().clone(cloneUrl, repoPath, [])
-                console.debug(`clone success`)
+                fs.accessSync(repoPath)
             } catch (e) {
-                console.error(`clone failure, repoUrl: ${repoUrl}`, e)
-            }
-            return;
-        }
-
-        console.debug(`update start`)
-        const gitInRepo = this.createGit(repoPath)
-        const isRepo = await gitInRepo.checkIsRepo()
-
-        if (isRepo) {
-
-            try {
-                await gitInRepo.fetch(['--unshallow'])
-            } catch (e) {}
-
-            try {
-                await gitInRepo.raw([
-                    'config',
-                    '--replace-all',
-                    'remote.origin.fetch',
-                    '+refs/heads/*:refs/remotes/origin/*'
-                ]);
-
-                await gitInRepo.fetch(['--all'])
-                console.log(`fetch success`)
-            } catch (e) {
-                console.error(`fetch failure, cloneUrl: ${cloneUrl}`, e)
+                exists = false
             }
 
-            try {
-                await gitInRepo.pull()
-                console.log(`pull success`)
-            } catch (e) {
-                console.error(`pull failure, try fetch, cloneUrl: ${cloneUrl}`, e)
+            const sshHost = serverConfig.sshHost
+            const cloneUrl = sshHost
+                ? `ssh://${sshHost}/${repo}`
+                : repoUrl
+            if(!exists) {
+
+                console.debug(`clone start`)
+                try {
+
+                    await this.createGit().clone(cloneUrl, repoPath, [])
+                    console.debug(`clone success`)
+                } catch (e) {
+                    console.error(`clone failure, repoUrl: ${repoUrl}`, e)
+                }
+                return;
             }
-        } else {
-            console.error(`update cancel of not git`)
+
+            console.debug(`update start`)
+            const gitInRepo = this.createGit(repoPath)
+            const isRepo = await gitInRepo.checkIsRepo()
+
+            if (isRepo) {
+
+                try {
+                    await gitInRepo.fetch(['--unshallow'])
+                } catch (e) {}
+
+                try {
+                    await gitInRepo.raw([
+                        'config',
+                        '--replace-all',
+                        'remote.origin.fetch',
+                        '+refs/heads/*:refs/remotes/origin/*'
+                    ]);
+
+                    await gitInRepo.fetch(['--all'])
+                    console.log(`fetch success`)
+                } catch (e) {
+                    console.error(`fetch failure, cloneUrl: ${cloneUrl}`, e)
+                }
+
+                try {
+                    await gitInRepo.pull()
+                    console.log(`pull success`)
+                } catch (e) {
+                    console.error(`pull failure, try fetch, cloneUrl: ${cloneUrl}`, e)
+                }
+            } else {
+                console.error(`update cancel of not git`)
+            }
         }
 
     }

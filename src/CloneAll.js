@@ -20,12 +20,8 @@ async function cloneAll() {
 
     for (const [repo, repoConfig] of Object.entries(repos)) {
 
-        const client = repoConfig.clients[0]
-        const tokenUrl = client.getTokenUrl(repo)
-        // console.debug('tokenUrl', tokenUrl)
-
         try {
-            await GitUtils.cloneOrUpdate(tokenUrl, client, repo, path)
+            await GitUtils.cloneOrUpdate(repoConfig, repo, path)
         } catch (e) {
             console.error('cloneOrUpdate failure', e)
         }
