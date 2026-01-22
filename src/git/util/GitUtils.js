@@ -9,9 +9,10 @@
 import fs from 'fs'
 import simpleGit from 'simple-git'
 
-import {GitHubClient} from '../client/GitHubClient.js'
-import {GitLabClient} from '../client/GitLabClient.js'
-import {GITEA, GITHUB, GITLAB} from '../enums/GitType.js'
+import {GitHubClient} from '#git/client/GitHubClient.js'
+import {GitLabClient} from '#git/client/GitLabClient.js'
+import {GiteaClient} from '#git/client/GiteaClient.js'
+import {GITEA, GITHUB, GITLAB} from '#git/enums/GitType.js'
 
 export class GitUtils {
 
@@ -73,14 +74,17 @@ export class GitUtils {
 
     }
 
-    static async cloneOrUpdate(clients, repo, path) {
+    static async cloneOrUpdate(repoConfig, repo, path) {
 
         const repoPath = `${path}/${repo}`
 
+        const clients = repoConfig.clients
         for (const client of clients) {
 
             const serverConfig = client.getConfig()
             const { username, host } = serverConfig
+
+            const repoUrl = client.getTokenUrl(repo)
 
             console.debug(`\ncloneOrUpdate, username: ${username}, host: ${host}, repoPath: ${repoPath}`)
 
@@ -93,7 +97,7 @@ export class GitUtils {
 
             const sshHost = serverConfig.sshHost
             const cloneUrl = sshHost
-                ? `ssh://${sshHost}/${repo}`
+                ? `ssh://${sshHost}/${repo}.git`
                 : repoUrl
             if(!exists) {
 
@@ -110,6 +114,14 @@ export class GitUtils {
 
             console.debug(`update start`)
             const gitInRepo = this.createGit(repoPath)
+
+            const remoteUrl = await gitInRepo.listRemote(['--get-url', 'origin'])
+            // console.debug(`remoteUrl`, remoteUrl)
+
+            if(!remoteUrl.startsWith(cloneUrl)) {
+                await gitInRepo.remote(['set-url', 'origin', cloneUrl]);
+            }
+
             const isRepo = await gitInRepo.checkIsRepo()
 
             if (isRepo) {
