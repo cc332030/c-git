@@ -153,6 +153,9 @@ export class GitUtils {
             } else {
                 console.error(`update cancel of not git`)
             }
+
+            break
+
         }
 
     }
