@@ -126,17 +126,17 @@ export class GitUtils {
 
             if (isRepo) {
 
-                try {
-                    await gitInRepo.fetch(['--unshallow'])
-                } catch (e) {}
+                // try {
+                //     await gitInRepo.fetch(['--unshallow'])
+                // } catch (e) {}
 
                 try {
-                    await gitInRepo.raw([
-                        'config',
-                        '--replace-all',
-                        'remote.origin.fetch',
-                        '+refs/heads/*:refs/remotes/origin/*'
-                    ]);
+                    // await gitInRepo.raw([
+                    //     'config',
+                    //     '--replace-all',
+                    //     'remote.origin.fetch',
+                    //     '+refs/heads/*:refs/remotes/origin/*'
+                    // ]);
 
                     await gitInRepo.fetch(['--all'])
                     console.log(`fetch success`)
@@ -144,12 +144,12 @@ export class GitUtils {
                     console.error(`fetch failure, cloneUrl: ${cloneUrl}`, e)
                 }
 
-                try {
-                    await gitInRepo.pull()
-                    console.log(`pull success`)
-                } catch (e) {
-                    console.error(`pull failure, try fetch, cloneUrl: ${cloneUrl}`, e)
-                }
+                // try {
+                //     await gitInRepo.pull()
+                //     console.log(`pull success`)
+                // } catch (e) {
+                //     console.error(`pull failure, try fetch, cloneUrl: ${cloneUrl}`, e)
+                // }
             } else {
                 console.error(`update cancel of not git`)
             }
