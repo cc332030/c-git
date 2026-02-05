@@ -118,9 +118,10 @@ export class GitUtils {
             const remoteUrl = await gitInRepo.listRemote(['--get-url', 'origin'])
             // console.debug(`remoteUrl`, remoteUrl)
 
-            if(!remoteUrl.startsWith(cloneUrl)) {
-                await gitInRepo.remote(['set-url', 'origin', cloneUrl]);
-            }
+            // 更新 origin url
+            // if(!remoteUrl.startsWith(cloneUrl)) {
+            //     await gitInRepo.remote(['set-url', 'origin', cloneUrl]);
+            // }
 
             const isRepo = await gitInRepo.checkIsRepo()
 
