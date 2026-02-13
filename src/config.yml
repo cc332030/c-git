@@ -1,6 +1,6 @@
 
 
-path: d:/file
+path: d:/file/repo
 
 servers:
   - host: https://github.com
